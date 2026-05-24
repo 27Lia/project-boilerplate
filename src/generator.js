@@ -3,6 +3,7 @@ import fse from "fs-extra";
 import { generateBase } from "./generators/base.js";
 import { generateAuth } from "./generators/auth.js";
 import { generateSignup } from "./generators/signup.js";
+import { generateMypage } from "./generators/mypage.js";
 
 export async function generateProject(options) {
   const { projectName, outputDir, features, socialLogins, signupSteps, primaryColor } = options;
@@ -22,6 +23,7 @@ export async function generateProject(options) {
 
   if (features.includes("auth")) await generateAuth(ctx);
   if (features.includes("signup")) await generateSignup(ctx);
+  if (features.includes("mypage")) await generateMypage(ctx);
 
   console.log(`\n✅ 완료! 다음 명령어로 시작하세요:\n`);
   console.log(`  cd ${projectName}`);
