@@ -30,7 +30,16 @@ export async function generateBase(ctx) {
     "src/types/common.ts",
     "src/components/ui/Button.tsx",
     "src/components/ui/Input.tsx",
+    "src/components/ui/FormInput.tsx",
+    "src/components/ui/FormPasswordInput.tsx",
+    "src/components/ui/PasswordHints.tsx",
     "src/components/ui/Modal.tsx",
+    "src/components/ui/Image.tsx",
+    "src/components/ui/Drawer.tsx",
+    "src/components/ui/EmptyState.tsx",
+    "src/components/ui/Spinner.tsx",
+    "src/components/ui/Checkbox.tsx",
+    "src/components/ui/Icons.tsx",
     "src/pages/NotFound.tsx",
   ];
 

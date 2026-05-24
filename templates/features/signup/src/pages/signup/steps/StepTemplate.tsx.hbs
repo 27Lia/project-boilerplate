@@ -1,19 +1,32 @@
+import { useFormContext } from "react-hook-form";
+import { FormInput } from "@/components/ui/FormInput";
 import { Button } from "@/components/ui/Button";
 import type { StepProps } from "@/features/signup/types";
 
 export default function Step{{stepNumber}}({ currentStep, totalSteps, onNext }: StepProps) {
+  const { trigger } = useFormContext();
+
+  const handleNext = async () => {
+    // 이 스텝에서 검증할 필드명을 배열로 넣어주세요
+    // const isValid = await trigger(["fieldName"]);
+    // if (!isValid) return;
+    onNext();
+  };
+
   return (
     <div className="flex flex-col gap-6 px-6 py-8">
       <div className="flex flex-col gap-1">
-        <p className="text-xs text-gray-400">{currentStep} / {totalSteps}</p>
-        <h2 className="text-xl font-bold">스텝 {{stepNumber}} 제목</h2>
-        <p className="text-sm text-gray-500">스텝 {{stepNumber}} 설명을 입력하세요.</p>
+        <p className="text-xs text-neutral-400">{currentStep} / {totalSteps}</p>
+        <h2 className="text-xl font-bold text-neutral-900">스텝 {{stepNumber}} 제목</h2>
+        <p className="text-sm text-neutral-500">스텝 {{stepNumber}} 설명을 입력하세요.</p>
       </div>
 
-      {/* 여기에 스텝 내용 추가 */}
+      <div className="flex flex-col gap-4">
+        {/* 예시: <FormInput name="fieldName" label="레이블" placeholder="입력하세요" /> */}
+      </div>
 
       <div className="mt-auto">
-        <Button size="full" onClick={onNext}>
+        <Button size="full" onClick={handleNext}>
           다음
         </Button>
       </div>
