@@ -1,0 +1,37 @@
+import { useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { apiClient } from "@/lib/axios";
+import { useAuthStore } from "@/features/auth/store/authStore";
+
+interface Props {
+  provider: "{{provider}}";
+}
+
+export default function OAuthCallbackPage({ provider }: Props) {
+  const [params] = useSearchParams();
+  const navigate = useNavigate();
+  const setAccessToken = useAuthStore((s) => s.setAccessToken);
+
+  useEffect(() => {
+    const code = params.get("code");
+    if (!code) return navigate("/login");
+
+    apiClient
+      .post<{ accessToken: string; isNewUser: boolean }>(
+        `/auth/oauth/${provider}`,
+        { code, redirectUri: `${window.location.origin}/oauth/callback/${provider}` }
+      )
+      .then(({ data }) => {
+        if (data.isNewUser) return navigate("/signup", { state: { provider } });
+        setAccessToken(data.accessToken);
+        navigate("/");
+      })
+      .catch(() => navigate("/login"));
+  }, []);
+
+  return (
+    <div className="flex h-full items-center justify-center">
+      <p className="text-sm text-gray-400">로그인 처리 중...</p>
+    </div>
+  );
+}
