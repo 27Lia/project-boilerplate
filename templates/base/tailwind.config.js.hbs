@@ -1,0 +1,21 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: "{{primaryColor}}",
+          50: "{{primaryColor}}0D",
+          100: "{{primaryColor}}1A",
+          500: "{{primaryColor}}",
+          600: "{{primaryColor}}CC",
+        },
+      },
+      fontFamily: {
+        sans: ["Pretendard", "sans-serif"],
+      },
+    },
+  },
+  plugins: [],
+};

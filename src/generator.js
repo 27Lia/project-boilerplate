@@ -1,0 +1,34 @@
+import path from "path";
+import { fileURLToPath } from "url";
+import fse from "fs-extra";
+import { generateBase } from "./generators/base.js";
+import { generateAuth } from "./generators/auth.js";
+import { generateSignup } from "./generators/signup.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+export const TEMPLATES_DIR = path.join(__dirname, "../templates");
+
+export async function generateProject(options) {
+  const { projectName, outputDir, features, socialLogins, signupSteps, primaryColor } = options;
+
+  const projectPath = path.resolve(outputDir, projectName);
+
+  if (await fse.pathExists(projectPath)) {
+    console.error(`\n❌ "${projectPath}" 폴더가 이미 존재합니다.`);
+    process.exit(1);
+  }
+
+  console.log(`\n🚀 프로젝트 생성 중: ${projectName}\n`);
+
+  const ctx = { projectName, projectPath, features, socialLogins, signupSteps, primaryColor };
+
+  await generateBase(ctx);
+
+  if (features.includes("auth")) await generateAuth(ctx);
+  if (features.includes("signup")) await generateSignup(ctx);
+
+  console.log(`\n✅ 완료! 다음 명령어로 시작하세요:\n`);
+  console.log(`  cd ${projectName}`);
+  console.log(`  npm install`);
+  console.log(`  npm run dev\n`);
+}

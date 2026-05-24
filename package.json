@@ -1,0 +1,17 @@
+{
+  "name": "project-boilerplate",
+  "version": "1.0.0",
+  "description": "Personal frontend scaffold tool",
+  "type": "module",
+  "bin": {
+    "scaffold": "./bin/index.js"
+  },
+  "scripts": {
+    "start": "node bin/index.js"
+  },
+  "dependencies": {
+    "fs-extra": "^11.2.0",
+    "handlebars": "^4.7.8",
+    "inquirer": "^9.3.7"
+  }
+}
