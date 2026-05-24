@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import NotFound from "@/pages/NotFound";
 {{#if (includes features "auth")}}
 import PrivateRoute from "@/pages/PrivateRoute";
@@ -47,6 +47,9 @@ export default function App() {
 {{#if (includes features "signup")}}
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/signup/complete" element={<SignupCompletePage />} />
+{{/if}}
+{{#if (includes features "auth")}}
+      <Route path="/" element={<Navigate to="/login" replace />} />
 {{/if}}
       <Route path="*" element={<NotFound />} />
     </Routes>
