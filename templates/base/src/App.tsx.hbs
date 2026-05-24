@@ -1,0 +1,54 @@
+import { Routes, Route } from "react-router-dom";
+import NotFound from "@/pages/NotFound";
+{{#if (includes features "auth")}}
+import PrivateRoute from "@/pages/PrivateRoute";
+import PublicRoute from "@/pages/PublicRoute";
+import LoginPage from "@/pages/auth/LoginPage";
+import EmailLoginPage from "@/pages/auth/EmailLoginPage";
+{{/if}}
+{{#if (includes features "signup")}}
+import SignupPage from "@/pages/signup/SignupPage";
+import SignupCompletePage from "@/pages/signup/SignupCompletePage";
+{{/if}}
+{{#if (includes features "mypage")}}
+import MyPage from "@/pages/mypage/MyPage";
+{{/if}}
+{{#if (includes features "list-detail")}}
+import ListPage from "@/pages/list/ListPage";
+import DetailPage from "@/pages/list/DetailPage";
+{{/if}}
+
+export default function App() {
+  return (
+    <Routes>
+{{#if (includes features "auth")}}
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login/email" element={<EmailLoginPage />} />
+      </Route>
+      <Route element={<PrivateRoute />}>
+{{#if (includes features "mypage")}}
+        <Route path="/mypage" element={<MyPage />} />
+{{/if}}
+{{#if (includes features "list-detail")}}
+        <Route path="/list" element={<ListPage />} />
+        <Route path="/list/:id" element={<DetailPage />} />
+{{/if}}
+      </Route>
+{{else}}
+{{#if (includes features "mypage")}}
+      <Route path="/mypage" element={<MyPage />} />
+{{/if}}
+{{#if (includes features "list-detail")}}
+      <Route path="/list" element={<ListPage />} />
+      <Route path="/list/:id" element={<DetailPage />} />
+{{/if}}
+{{/if}}
+{{#if (includes features "signup")}}
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/signup/complete" element={<SignupCompletePage />} />
+{{/if}}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}

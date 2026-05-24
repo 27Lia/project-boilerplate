@@ -23,10 +23,10 @@ export async function generateBase(ctx) {
   const staticFiles = [
     "public/vite.svg",
     "src/main.tsx",
-    "src/App.tsx",
     "src/index.css",
     "src/lib/queryClient.ts",
     "src/lib/axios.ts",
+    "src/lib/utils.ts",
     "src/store/uiStore.ts",
     "src/types/common.ts",
     "src/components/ui/Button.tsx",
@@ -44,6 +44,7 @@ export async function generateBase(ctx) {
   }
 
   const templatedFiles = [
+    { src: "src/App.tsx.hbs", dest: "src/App.tsx" },
     { src: "package.json.hbs", dest: "package.json" },
     { src: "vite.config.ts.hbs", dest: "vite.config.ts" },
     { src: "tsconfig.json.hbs", dest: "tsconfig.json" },
