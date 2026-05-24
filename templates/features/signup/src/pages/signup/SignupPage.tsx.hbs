@@ -1,0 +1,53 @@
+import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
+import { StepHeader } from "@/features/signup/components/StepHeader";
+import { StepProgressBar } from "@/features/signup/components/StepProgressBar";
+import { signupSchema } from "@/features/signup/schema";
+import { useSignup } from "@/features/signup/hooks/useSignup";
+import type { SignupFormValues } from "@/features/signup/types";
+{{#each steps}}
+import Step{{stepNumber}} from "./steps/Step{{stepNumber}}";
+{{/each}}
+
+const STEPS = [{{#each steps}}Step{{stepNumber}}{{#unless @last}}, {{/unless}}{{/each}}];
+
+export default function SignupPage() {
+  const navigate = useNavigate();
+  const [step, setStep] = useState(0);
+  const { mutateAsync: signup } = useSignup();
+
+  const methods = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
+    mode: "onChange",
+  });
+
+  const totalSteps = STEPS.length;
+  const CurrentStep = STEPS[step];
+  const isLastStep = step === totalSteps - 1;
+
+  const handleNext = () => setStep((prev) => prev + 1);
+  const handleBack = () => (step === 0 ? navigate(-1) : setStep((prev) => prev - 1));
+
+  const handleSubmit = methods.handleSubmit(async (values) => {
+    await signup(values);
+  });
+
+  return (
+    <FormProvider {...methods}>
+      <div className="flex h-full flex-col">
+        <StepHeader onBack={handleBack} />
+        <StepProgressBar current={step + 1} total={totalSteps} />
+
+        <div className="flex-1 overflow-y-auto">
+          <CurrentStep
+            currentStep={step + 1}
+            totalSteps={totalSteps}
+            onNext={isLastStep ? handleSubmit : handleNext}
+          />
+        </div>
+      </div>
+    </FormProvider>
+  );
+}
