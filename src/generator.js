@@ -1,12 +1,8 @@
 import path from "path";
-import { fileURLToPath } from "url";
 import fse from "fs-extra";
 import { generateBase } from "./generators/base.js";
 import { generateAuth } from "./generators/auth.js";
 import { generateSignup } from "./generators/signup.js";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-export const TEMPLATES_DIR = path.join(__dirname, "../templates");
 
 export async function generateProject(options) {
   const { projectName, outputDir, features, socialLogins, signupSteps, primaryColor } = options;

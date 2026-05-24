@@ -1,7 +1,7 @@
 import path from "path";
 import fse from "fs-extra";
 import Handlebars from "handlebars";
-import { TEMPLATES_DIR } from "../generator.js";
+import { TEMPLATES_DIR } from "../constants.js";
 
 const AUTH_DIR = path.join(TEMPLATES_DIR, "features/auth");
 

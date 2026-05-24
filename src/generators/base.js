@@ -1,7 +1,9 @@
 import path from "path";
 import fse from "fs-extra";
 import Handlebars from "handlebars";
-import { TEMPLATES_DIR } from "../generator.js";
+import { TEMPLATES_DIR } from "../constants.js";
+
+Handlebars.registerHelper("includes", (arr, val) => Array.isArray(arr) && arr.includes(val));
 
 const BASE_DIR = path.join(TEMPLATES_DIR, "base");
 
