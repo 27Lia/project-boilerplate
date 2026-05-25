@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scaffold UI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#6366f1', 50: '#eef2ff', 100: '#e0e7ff', 600: '#4f46e5' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .tab-active { background: #6366f1; color: white; }
+    .tab-inactive { background: #f1f5f9; color: #64748b; }
+    .log-box { font-family: 'SF Mono', 'Fira Code', monospace; }
+    input[type=color] { -webkit-appearance: none; border: none; padding: 0; cursor: pointer; }
+    input[type=color]::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type=color]::-webkit-color-swatch { border: none; border-radius: 6px; }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+  <div class="max-w-2xl mx-auto px-4 py-10">
+    <!-- 헤더 -->
+    <div class="mb-8 flex items-center gap-3">
+      <div class="h-10 w-10 rounded-2xl bg-primary flex items-center justify-center text-white font-black text-lg">S</div>
+      <div>
+        <h1 class="text-xl font-bold text-slate-900">Scaffold UI</h1>
+        <p class="text-xs text-slate-400">프로젝트 자동화 도구</p>
+      </div>
+    </div>
+
+    <!-- 탭 -->
+    <div class="flex gap-2 mb-6">
+      <button onclick="switchTab('create')" id="tab-create" class="tab-active px-4 py-2 rounded-xl text-sm font-semibold transition-all">🚀 새 프로젝트</button>
+      <button onclick="switchTab('feature')" id="tab-feature" class="tab-inactive px-4 py-2 rounded-xl text-sm font-semibold transition-all">➕ 기능 추가</button>
+      <button onclick="switchTab('component')" id="tab-component" class="tab-inactive px-4 py-2 rounded-xl text-sm font-semibold transition-all">🧩 컴포넌트 추가</button>
+    </div>
+
+    <!-- ─── 탭1: 새 프로젝트 ─── -->
+    <div id="panel-create">
+      <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 flex flex-col gap-5">
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-slate-700">프로젝트 이름</label>
+          <input id="c-name" type="text" placeholder="my-app" class="h-11 rounded-xl border border-slate-200 px-4 text-sm outline-none focus:border-primary transition-colors" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-slate-700">생성 경로 <span class="font-normal text-slate-400">(절대경로)</span></label>
+          <input id="c-dir" type="text" placeholder="/Users/me/projects" class="h-11 rounded-xl border border-slate-200 px-4 text-sm outline-none focus:border-primary transition-colors" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-slate-700">메인 컬러</label>
+          <div class="flex items-center gap-3 h-11 rounded-xl border border-slate-200 px-4">
+            <input type="color" id="c-color" value="#6366f1" class="h-7 w-7 rounded-lg" />
+            <span id="c-color-text" class="text-sm text-slate-600 font-mono">#6366f1</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-semibold text-slate-700">기능 선택</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="feature-check flex items-center gap-2.5 rounded-xl border border-slate-200 px-4 py-3 cursor-pointer hover:border-primary transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary-50">
+              <input type="checkbox" value="auth" checked class="accent-primary" /> <span class="text-sm text-slate-700">로그인 (auth)</span>
+            </label>
+            <label class="feature-check flex items-center gap-2.5 rounded-xl border border-slate-200 px-4 py-3 cursor-pointer hover:border-primary transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary-50">
+              <input type="checkbox" value="signup" checked class="accent-primary" /> <span class="text-sm text-slate-700">회원가입 (signup)</span>
+            </label>
+            <label class="feature-check flex items-center gap-2.5 rounded-xl border border-slate-200 px-4 py-3 cursor-pointer hover:border-primary transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary-50">
+              <input type="checkbox" value="mypage" class="accent-primary" /> <span class="text-sm text-slate-700">마이페이지 (mypage)</span>
+            </label>
+            <label class="feature-check flex items-center gap-2.5 rounded-xl border border-slate-200 px-4 py-3 cursor-pointer hover:border-primary transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary-50">
+              <input type="checkbox" value="list-detail" class="accent-primary" /> <span class="text-sm text-slate-700">리스트+상세</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="c-social-wrap" class="flex flex-col gap-2">
+          <label class="text-sm font-semibold text-slate-700">소셜 로그인</label>
+          <div class="flex gap-2">
+            <label class="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 cursor-pointer hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-primary-50 transition-colors">
+              <input type="checkbox" value="kakao" checked class="accent-primary" /> <span class="text-sm">카카오</span>
+            </label>
+            <label class="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 cursor-pointer hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-primary-50 transition-colors">
+              <input type="checkbox" value="google" checked class="accent-primary" /> <span class="text-sm">구글</span>
+            </label>
+            <label class="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 cursor-pointer hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-primary-50 transition-colors">
+              <input type="checkbox" value="apple" class="accent-primary" /> <span class="text-sm">애플</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="c-steps-wrap" class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-slate-700">회원가입 스텝 수</label>
+          <div class="flex items-center gap-3">
+            <input id="c-steps" type="range" min="1" max="8" value="4" class="flex-1 accent-primary" />
+            <span id="c-steps-val" class="text-sm font-mono w-5 text-center text-slate-700">4</span>
+          </div>
+        </div>
+
+        <button onclick="createProject()" class="h-12 w-full rounded-2xl bg-primary text-white font-semibold text-sm hover:brightness-95 active:scale-[0.98] transition-all">
+          프로젝트 생성
+        </button>
+      </div>
+    </div>
+
+    <!-- ─── 탭2: 기능 추가 ─── -->
+    <div id="panel-feature" class="hidden">
+      <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 flex flex-col gap-5">
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-slate-700">기존 프로젝트 경로 <span class="font-normal text-slate-400">(절대경로)</span></label>
+          <input id="f-dir" type="text" placeholder="/Users/me/projects/my-app" class="h-11 rounded-xl border border-slate-200 px-4 text-sm outline-none focus:border-primary transition-colors" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-semibold text-slate-700">추가할 기능</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="flex items-center gap-2.5 rounded-xl border border-slate-200 px-4 py-3 cursor-pointer hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-primary-50 transition-colors">
+              <input type="checkbox" value="auth" class="accent-primary f-feature" /> <span class="text-sm text-slate-700">로그인 (auth)</span>
+            </label>
+            <label class="flex items-center gap-2.5 rounded-xl border border-slate-200 px-4 py-3 cursor-pointer hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-primary-50 transition-colors">
+              <input type="checkbox" value="signup" class="accent-primary f-feature" /> <span class="text-sm text-slate-700">회원가입 (signup)</span>
+            </label>
+            <label class="flex items-center gap-2.5 rounded-xl border border-slate-200 px-4 py-3 cursor-pointer hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-primary-50 transition-colors">
+              <input type="checkbox" value="mypage" class="accent-primary f-feature" /> <span class="text-sm text-slate-700">마이페이지 (mypage)</span>
+            </label>
+            <label class="flex items-center gap-2.5 rounded-xl border border-slate-200 px-4 py-3 cursor-pointer hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-primary-50 transition-colors">
+              <input type="checkbox" value="list-detail" class="accent-primary f-feature" /> <span class="text-sm text-slate-700">리스트+상세</span>
+            </label>
+          </div>
+        </div>
+
+        <button onclick="addFeature()" class="h-12 w-full rounded-2xl bg-primary text-white font-semibold text-sm hover:brightness-95 active:scale-[0.98] transition-all">
+          기능 추가
+        </button>
+      </div>
+    </div>
+
+    <!-- ─── 탭3: 컴포넌트 추가 ─── -->
+    <div id="panel-component" class="hidden">
+      <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 flex flex-col gap-5">
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-slate-700">기존 프로젝트 경로 <span class="font-normal text-slate-400">(절대경로)</span></label>
+          <input id="comp-dir" type="text" placeholder="/Users/me/projects/my-app" class="h-11 rounded-xl border border-slate-200 px-4 text-sm outline-none focus:border-primary transition-colors" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-semibold text-slate-700">추가할 컴포넌트</label>
+          <div id="comp-list" class="flex flex-col gap-2">
+            <p class="text-sm text-slate-400">로딩 중...</p>
+          </div>
+        </div>
+
+        <button onclick="addComponent()" class="h-12 w-full rounded-2xl bg-primary text-white font-semibold text-sm hover:brightness-95 active:scale-[0.98] transition-all">
+          컴포넌트 추가
+        </button>
+      </div>
+    </div>
+
+    <!-- 로그 패널 -->
+    <div id="log-wrap" class="hidden mt-4">
+      <div class="bg-slate-900 rounded-3xl p-5">
+        <p class="text-xs text-slate-500 mb-3 font-semibold uppercase tracking-widest">Output</p>
+        <div id="log-box" class="log-box text-sm text-slate-300 flex flex-col gap-1 max-h-56 overflow-y-auto"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ── 탭 전환
+    function switchTab(tab) {
+      ['create','feature','component'].forEach(t => {
+        document.getElementById(`panel-${t}`).classList.toggle('hidden', t !== tab);
+        const btn = document.getElementById(`tab-${t}`);
+        btn.className = t === tab
+          ? 'tab-active px-4 py-2 rounded-xl text-sm font-semibold transition-all'
+          : 'tab-inactive px-4 py-2 rounded-xl text-sm font-semibold transition-all';
+      });
+    }
+
+    // ── 컬러 피커 연동
+    document.getElementById('c-color').addEventListener('input', e => {
+      document.getElementById('c-color-text').textContent = e.target.value;
+    });
+
+    // ── 스텝 슬라이더 연동
+    document.getElementById('c-steps').addEventListener('input', e => {
+      document.getElementById('c-steps-val').textContent = e.target.value;
+    });
+
+    // ── auth 체크 시 소셜 로그인 섹션 토글
+    document.querySelectorAll('.feature-check input').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const authChecked = [...document.querySelectorAll('.feature-check input')]
+          .find(c => c.value === 'auth')?.checked;
+        const signupChecked = [...document.querySelectorAll('.feature-check input')]
+          .find(c => c.value === 'signup')?.checked;
+        document.getElementById('c-social-wrap').style.display = authChecked ? '' : 'none';
+        document.getElementById('c-steps-wrap').style.display = signupChecked ? '' : 'none';
+      });
+    });
+
+    // ── 로그 출력
+    function log(msg, type = 'normal') {
+      const box = document.getElementById('log-box');
+      const el = document.createElement('p');
+      el.textContent = msg;
+      el.className = type === 'error' ? 'text-red-400' : msg.startsWith('✅') || msg.startsWith('✓') ? 'text-emerald-400' : 'text-slate-300';
+      box.appendChild(el);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function showLog() {
+      document.getElementById('log-wrap').classList.remove('hidden');
+      document.getElementById('log-box').innerHTML = '';
+    }
+
+    // ── SSE 수신 공통 함수
+    function listenSSE(url, body, onDone) {
+      showLog();
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      }).then(async res => {
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buf = '';
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buf += decoder.decode(value, { stream: true });
+          const lines = buf.split('\n\n');
+          buf = lines.pop();
+          for (const line of lines) {
+            if (!line.startsWith('data:')) continue;
+            const json = JSON.parse(line.slice(5).trim());
+            if (json.msg) log(json.msg);
+            if (json.error) log(json.error || '오류가 발생했습니다.', 'error');
+            if (json.done) onDone?.(json);
+          }
+        }
+      });
+    }
+
+    // ── 새 프로젝트 생성
+    function createProject() {
+      const name = document.getElementById('c-name').value.trim();
+      const dir = document.getElementById('c-dir').value.trim();
+      if (!name || !dir) return alert('프로젝트 이름과 생성 경로를 입력해주세요.');
+
+      const features = [...document.querySelectorAll('.feature-check input:checked')].map(c => c.value);
+      const socialLogins = [...document.querySelectorAll('#c-social-wrap input:checked')].map(c => c.value);
+      const signupSteps = parseInt(document.getElementById('c-steps').value);
+      const primaryColor = document.getElementById('c-color').value;
+
+      listenSSE('/api/create', { projectName: name, outputDir: dir, features, socialLogins, signupSteps, primaryColor }, () => {});
+    }
+
+    // ── 기능 추가
+    function addFeature() {
+      const targetDir = document.getElementById('f-dir').value.trim();
+      if (!targetDir) return alert('프로젝트 경로를 입력해주세요.');
+      const features = [...document.querySelectorAll('.f-feature:checked')].map(c => c.value);
+      if (!features.length) return alert('추가할 기능을 선택해주세요.');
+      listenSSE('/api/feature', { targetDir, features }, () => {});
+    }
+
+    // ── 컴포넌트 추가
+    function addComponent() {
+      const targetDir = document.getElementById('comp-dir').value.trim();
+      if (!targetDir) return alert('프로젝트 경로를 입력해주세요.');
+      const componentNames = [...document.querySelectorAll('.comp-check:checked')].map(c => c.value);
+      if (!componentNames.length) return alert('추가할 컴포넌트를 선택해주세요.');
+      listenSSE('/api/component', { targetDir, componentNames }, () => {});
+    }
+
+    // ── 컴포넌트 목록 로드
+    fetch('/api/components').then(r => r.json()).then(list => {
+      const container = document.getElementById('comp-list');
+      container.innerHTML = list.map(c => `
+        <label class="flex items-start gap-2.5 rounded-xl border border-slate-200 px-4 py-3 cursor-pointer hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-primary-50 transition-colors">
+          <input type="checkbox" value="${c.name}" class="accent-primary comp-check mt-0.5" />
+          <div>
+            <p class="text-sm font-medium text-slate-700">${c.name}</p>
+            <p class="text-xs text-slate-400">${c.description}${c.deps.length ? ` · 필요: ${c.deps.join(', ')}` : ''}</p>
+          </div>
+        </label>
+      `).join('');
+    });
+  </script>
+</body>
+</html>
