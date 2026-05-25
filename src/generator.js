@@ -5,6 +5,7 @@ import { generateAuth } from "./generators/auth.js";
 import { generateSignup } from "./generators/signup.js";
 import { generateMypage } from "./generators/mypage.js";
 import { generateListDetail } from "./generators/list-detail.js";
+import { generateClaudeMd } from "./claudeMd.js";
 
 export async function generateProject(options) {
   const { projectName, outputDir, features, socialLogins, signupSteps, primaryColor } = options;
@@ -27,8 +28,11 @@ export async function generateProject(options) {
   if (features.includes("mypage")) await generateMypage(ctx);
   if (features.includes("list-detail")) await generateListDetail(ctx);
 
+  await generateClaudeMd(ctx);
+
   console.log(`\n✅ 완료! 다음 명령어로 시작하세요:\n`);
   console.log(`  cd ${projectName}`);
   console.log(`  npm install`);
   console.log(`  npm run dev\n`);
+  console.log(`💡 Claude Code로 개발 시: CLAUDE.md가 자동으로 컨텍스트를 제공합니다.\n`);
 }

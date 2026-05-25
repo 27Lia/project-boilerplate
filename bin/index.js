@@ -4,6 +4,7 @@ import path from "path";
 import fse from "fs-extra";
 import { generateProject } from "../src/generator.js";
 import { addComponent } from "../src/addComponent.js";
+import { addFeature } from "../src/addFeature.js";
 import { COMPONENT_CATALOG } from "../src/components.js";
 
 const command = process.argv[2];
@@ -57,6 +58,77 @@ if (command === "component") {
     console.log("\n✅ 완료!\n");
   }
 
+  process.exit(0);
+}
+
+// ─────────────────────────────────────────
+// scaffold feature  →  기존 프로젝트에 기능 추가
+// ─────────────────────────────────────────
+if (command === "feature") {
+  const cwd = process.cwd();
+  const hasPackageJson = await fse.pathExists(path.join(cwd, "package.json"));
+
+  if (!hasPackageJson) {
+    console.error("\n❌ package.json을 찾을 수 없습니다. 프로젝트 루트에서 실행해주세요.\n");
+    process.exit(1);
+  }
+
+  const { features } = await inquirer.prompt([
+    {
+      type: "checkbox",
+      name: "features",
+      message: "추가할 기능을 선택하세요:",
+      choices: [
+        { name: "로그인 (auth)", value: "auth" },
+        { name: "회원가입 스텝 (signup)", value: "signup" },
+        { name: "마이페이지 (mypage)", value: "mypage" },
+        { name: "리스트 + 상세 (list-detail)", value: "list-detail" },
+      ],
+      validate: (v) => v.length > 0 || "최소 1개 이상 선택해주세요.",
+    },
+  ]);
+
+  const extraAnswers = await inquirer.prompt([
+    {
+      type: "checkbox",
+      name: "socialLogins",
+      message: "소셜 로그인 선택:",
+      choices: [
+        { name: "카카오", value: "kakao", checked: true },
+        { name: "구글", value: "google", checked: true },
+        { name: "애플", value: "apple" },
+      ],
+      when: () => features.includes("auth"),
+    },
+    {
+      type: "number",
+      name: "signupSteps",
+      message: "회원가입 스텝 수:",
+      default: 4,
+      when: () => features.includes("signup"),
+    },
+  ]);
+
+  console.log("");
+  const ctx = {
+    projectName: path.basename(cwd),
+    socialLogins: extraAnswers.socialLogins ?? [],
+    signupSteps: extraAnswers.signupSteps ?? 4,
+    features,
+    primaryColor: "#6366f1",
+  };
+
+  const results = await addFeature({ targetDir: cwd, features, ctx });
+
+  for (const r of results) {
+    if (r.success) {
+      console.log(`  ✓ ${r.feature} 추가 완료 (App.tsx 라우트 자동 주입)`);
+    } else {
+      console.log(`  ✗ ${r.feature}: ${r.reason}`);
+    }
+  }
+
+  console.log("\n✅ 완료! npm install 후 확인하세요.\n");
   process.exit(0);
 }
 
@@ -122,6 +194,7 @@ if (!command || command === "create") {
 console.log(`
 사용법:
   scaffold              새 프로젝트 생성
-  scaffold component    기존 프로젝트에 컴포넌트 추가
+  scaffold feature      기존 프로젝트에 기능 추가 (mypage, list-detail 등)
+  scaffold component    기존 프로젝트에 컴포넌트 추가 (RegionDrawer 등)
 `);
 process.exit(1);
