@@ -43,6 +43,7 @@ export async function generateBase(ctx) {
     "src/components/ui/Spinner.tsx",
     "src/components/ui/Checkbox.tsx",
     "src/components/common/RegionDrawer.tsx",
+    "src/components/common/Header.tsx",
     "src/pages/NotFound.tsx",
   ];
 

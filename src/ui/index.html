@@ -61,9 +61,10 @@
 
         <div class="flex flex-col gap-1.5">
           <label class="text-sm font-semibold text-slate-700">메인 컬러</label>
-          <div class="flex items-center gap-3 h-11 rounded-xl border border-slate-200 px-4">
-            <input type="color" id="c-color" value="#6366f1" class="h-7 w-7 rounded-lg" />
-            <span id="c-color-text" class="text-sm text-slate-600 font-mono">#6366f1</span>
+          <div class="flex items-center gap-2 h-11 rounded-xl border border-slate-200 px-3 focus-within:border-primary transition-colors">
+            <input type="color" id="c-color" value="#6366f1" class="h-7 w-7 rounded-lg shrink-0 cursor-pointer" />
+            <input type="text" id="c-color-text" value="#6366f1" maxlength="7" placeholder="#6366f1"
+              class="flex-1 text-sm text-slate-700 font-mono bg-transparent outline-none" />
           </div>
         </div>
 
@@ -191,9 +192,15 @@
       });
     }
 
-    // ── 컬러 피커 연동
+    // ── 컬러 피커 ↔ 텍스트 입력 양방향 연동
     document.getElementById('c-color').addEventListener('input', e => {
-      document.getElementById('c-color-text').textContent = e.target.value;
+      document.getElementById('c-color-text').value = e.target.value;
+    });
+    document.getElementById('c-color-text').addEventListener('input', e => {
+      const val = e.target.value.trim();
+      if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+        document.getElementById('c-color').value = val;
+      }
     });
 
     // ── 스텝 슬라이더 연동
@@ -265,7 +272,10 @@
       const features = [...document.querySelectorAll('.feature-check input:checked')].map(c => c.value);
       const socialLogins = [...document.querySelectorAll('#c-social-wrap input:checked')].map(c => c.value);
       const signupSteps = parseInt(document.getElementById('c-steps').value);
-      const primaryColor = document.getElementById('c-color').value;
+      const colorText = document.getElementById('c-color-text').value.trim();
+      const primaryColor = /^#[0-9a-fA-F]{6}$/.test(colorText)
+        ? colorText
+        : document.getElementById('c-color').value;
 
       listenSSE('/api/create', { projectName: name, outputDir: dir, features, socialLogins, signupSteps, primaryColor }, () => {});
     }
