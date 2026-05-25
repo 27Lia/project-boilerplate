@@ -81,4 +81,30 @@ export const COMPONENT_CATALOG = [
     ],
     deps: [],
   },
+  {
+    name: "Header",
+    description: "앱 헤더 (home/tabs/default variant, 뒤로가기/탭/우측 아이콘)",
+    files: [
+      {
+        src: "components/common/Header.tsx",
+        dest: "src/components/common/Header.tsx",
+      },
+    ],
+    deps: ["lucide-react"],
+  },
+  {
+    name: "Modal",
+    description: "전역 모달 (useModalStore 연동, 확인/취소 버튼 커스텀)",
+    files: [
+      {
+        src: "components/ui/Modal.tsx",
+        dest: "src/components/ui/Modal.tsx",
+      },
+      {
+        src: "store/modalStore.ts",
+        dest: "src/store/modalStore.ts",
+      },
+    ],
+    deps: ["antd", "class-variance-authority", "zustand"],
+  },
 ];
