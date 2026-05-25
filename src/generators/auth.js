@@ -23,6 +23,7 @@ export async function generateAuth(ctx) {
     "src/pages/auth/EmailLoginPage.tsx",
     "src/pages/PrivateRoute.tsx",
     "src/pages/PublicRoute.tsx",
+    "src/api/auth.ts",
   ];
 
   for (const file of staticFiles) {
