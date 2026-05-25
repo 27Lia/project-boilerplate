@@ -18,41 +18,69 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-12 px-6">
-      <div className="flex flex-col items-center gap-3">
-        <img src="/logo.svg" alt="logo" className="h-12" />
-        <p className="text-sm text-gray-500">{{projectName}}</p>
-      </div>
-
-      <div className="flex w-full flex-col gap-6">
-        <p className="text-center text-xs text-gray-400">간편 로그인</p>
-        <div className="flex items-center justify-center gap-8">
-          {{#each socialLogins}}
-          <SocialLoginButton
-            provider="{{this}}"
-            isRecent={lastLogin === "{{this}}"}
-            onClick={() => handleSocial("{{this}}")}
-          />
-          {{/each}}
+    <div className="flex h-full flex-col bg-white">
+      {/* 상단 로고 영역 */}
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6">
+        {/* 로고: public/logo.svg 교체하거나 아래 텍스트 로고로 변경하세요 */}
+        <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-primary shadow-lg">
+          <span className="text-3xl font-black text-white">
+            {/* 프로젝트 이니셜 */}
+            {{projectName.[0]}}
+          </span>
+        </div>
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-neutral-900">{{projectName}}</h1>
+          <p className="mt-1 text-sm text-neutral-400">서비스 슬로건을 입력하세요</p>
         </div>
       </div>
 
-      <div className="relative w-full pt-5">
-        {lastLogin === "email" && (
-          <div className="absolute -top-1 left-1/2 -translate-x-1/2 -translate-y-full flex flex-col items-center">
-            <span className="rounded-lg bg-primary px-2 py-0.5 text-[10px] text-white whitespace-nowrap shadow-sm">
-              최근 로그인
-            </span>
-            <span className="border-x-4 border-t-4 border-x-transparent border-t-primary" />
+      {/* 하단 로그인 영역 */}
+      <div className="flex flex-col gap-6 px-6 pb-12">
+        {{#if socialLogins.length}}
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex w-full items-center gap-3">
+            <div className="h-px flex-1 bg-neutral-200" />
+            <span className="text-xs text-neutral-400">간편 로그인</span>
+            <div className="h-px flex-1 bg-neutral-200" />
           </div>
-        )}
-        <Button
-          variant="outline"
-          size="full"
-          onClick={() => handleSocial("email")}
-        >
-          이메일로 로그인
-        </Button>
+          <div className="flex items-center justify-center gap-6">
+            {{#each socialLogins}}
+            <SocialLoginButton
+              provider="{{this}}"
+              isRecent={lastLogin === "{{this}}"}
+              onClick={() => handleSocial("{{this}}")}
+            />
+            {{/each}}
+          </div>
+        </div>
+        {{/if}}
+
+        <div className="relative">
+          {lastLogin === "email" && (
+            <div className="absolute -top-1 left-1/2 -translate-x-1/2 -translate-y-full flex flex-col items-center">
+              <span className="rounded-lg bg-primary px-2 py-0.5 text-[10px] text-white whitespace-nowrap shadow-sm">
+                최근 로그인
+              </span>
+              <span className="border-x-4 border-t-4 border-x-transparent border-t-primary" />
+            </div>
+          )}
+          <Button variant="outline" size="full" onClick={() => handleSocial("email")}>
+            이메일로 로그인
+          </Button>
+        </div>
+
+        {{#if (includes features "signup")}}
+        <div className="flex items-center justify-center gap-1 text-sm">
+          <span className="text-neutral-400">아직 계정이 없으신가요?</span>
+          <button
+            type="button"
+            className="font-semibold text-primary underline-offset-2 hover:underline"
+            onClick={() => navigate("/signup")}
+          >
+            회원가입
+          </button>
+        </div>
+        {{/if}}
       </div>
     </div>
   );

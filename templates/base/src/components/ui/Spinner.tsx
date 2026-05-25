@@ -1,5 +1,20 @@
 import { cn } from "@/lib/utils";
 
+/**
+ * Spinner — 로딩 스피너
+ *
+ * @example
+ * // 인라인 스피너
+ * {isLoading && <Spinner />}
+ * {isLoading && <Spinner size="sm" />}
+ *
+ * // 전체화면 로딩
+ * if (isLoading) return <FullPageSpinner />;
+ *
+ * // 버튼 내부 (Button 컴포넌트의 loading prop 사용 권장)
+ * <Button loading={isPending}>저장</Button>
+ */
+
 interface SpinnerProps {
   size?: "sm" | "md" | "lg";
   className?: string;

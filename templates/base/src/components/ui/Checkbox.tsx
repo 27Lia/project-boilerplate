@@ -1,4 +1,22 @@
 import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
+
+/**
+ * Checkbox — 체크박스 버튼 컴포넌트
+ *
+ * @example
+ * // 단독 사용
+ * const [checked, setChecked] = useState(false);
+ * <Checkbox checked={checked} onChange={setChecked} label="전체 동의" />
+ *
+ * // React Hook Form과 연동
+ * const { watch, setValue } = useFormContext();
+ * <Checkbox
+ *   checked={watch("agreeAll")}
+ *   onChange={(v) => setValue("agreeAll", v)}
+ *   label="전체 동의"
+ * />
+ */
 
 interface CheckboxProps {
   checked: boolean;
@@ -26,27 +44,13 @@ export function Checkbox({
     >
       <div
         className={cn(
-          "flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-colors",
-          checked
-            ? "border-primary bg-primary"
-            : "border-neutral-300 bg-white"
+          "flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-colors",
+          checked ? "border-primary bg-primary" : "border-neutral-300 bg-white"
         )}
       >
-        {checked && (
-          <svg className="h-3 w-3 text-white" viewBox="0 0 12 12" fill="none">
-            <path
-              d="M2 6l3 3 5-5"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        )}
+        {checked && <Check size={12} strokeWidth={3} className="text-white" />}
       </div>
-      {label && (
-        <span className="text-sm text-neutral-700">{label}</span>
-      )}
+      {label && <span className="text-sm text-neutral-700">{label}</span>}
     </button>
   );
 }
